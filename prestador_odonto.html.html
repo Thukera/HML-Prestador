@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SAS Odonto</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      height: 100vh;
+      justify-content: center;
+      align-items: center;
+      background-color: #f0f0f0;
+    }
+
+    .container {
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      width: 320px;
+    }
+
+    h1 {
+      color: #333;
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    label {
+      display: block;
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.5rem;
+      font-size: 1rem;
+    }
+
+    button {
+      margin-top: 1.5rem;
+      width: 100%;
+      padding: 0.75rem;
+      font-size: 1rem;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Homologação <br/>Chat Prestador Odonto</h1>
+    <form onsubmit="return false;">
+      <label for="nome">NOME</label>
+      <input type="text" id="nome" onchange="handleChange('nome', this.value)" />
+
+      <label for="cpf">CPF</label>
+      <input type="text" id="cpf" onchange="handleChange('cpf', this.value)" />
+
+      <label for="cnpj">CNPJ</label>
+      <input type="text" id="cnpj" onchange="handleChange('cnpj', this.value)" />
+
+      <label for="cod_prestador">Código Prestador</label>
+      <input type="text" id="cod_prestador" onchange="handleChange('cod_prestador', this.value)" />
+
+      <button type="button" onclick="startChat()">Iniciar Chat</button>
+      <!-- button type="button" onclick="resetChat()">Encerrar Chat</button-->
+    </form>
+  </div>
+</body>
+
+<script>
+  // VARS
+  let cpf = '', cnpj = '', cod_prestador = '', nome = '';
+  let chatScriptLoaded = false;
+
+  function handleChange(field, value) {
+    if (field === 'cpf') cpf = value;
+    if (field === 'cnpj') cnpj = value;
+    if (field === 'cod_prestador') cod_prestador = value;
+    if (field === 'nome') nome = value;
+
+    console.log({ nome, cpf, cnpj, cod_prestador });
+  }
+
+  function startChat() {
+    console.log("Start Chat");
+
+    if (chatScriptLoaded) {
+      console.warn("Chat already loaded");
+      return;
+    }
+
+    console.log("Loading Chat Script");
+
+    // INICIA CHAT NICE
+    (function (n, u) {
+      window.CXoneDfo = n,
+        window[n] = window[n] || function () { (window[n].q = window[n].q || []).push(arguments) }, window[n].u = u,
+        e = document.createElement("script"), e.type = "module", e.src = u + "?" + Math.round(Date.now() / 1e3 / 3600),
+        document.head.appendChild(e)
+    })('cxone', 'https://web-modules-de-na1.niceincontact.com/loader/1/loader.js');
+    cxone('init', '1404');
+    cxone('chat', 'init', 1404, 'chat_1abd9372-8a32-4632-b9c8-437711e2babe');
+
+    cxone('chat', 'enableChatAlwaysOnline');
+    cxone('chat', 'openChatWindow');
+    cxone('chat', 'autoStartSession');
+    cxone('chat', 'hidePreSurvey');
+    cxone('chat', 'sendFirstMessageAutomatically', 'Hello');
+    cxone('chat', 'setCustomerName', nome);
+    cxone('chat', 'setCaseCustomField', 'cnpj', cnpj);
+    cxone('chat', 'setCaseCustomField', 'cpf', cpf);
+    cxone('chat', 'setCaseCustomField', 'cod_prestador', cod_prestador);
+    // fim
+
+
+  }
+
+</script>
+
+
+</html>
